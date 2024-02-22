@@ -8,18 +8,18 @@ import os
 
 driver = webdriver.Chrome ()
 
-driver.get('https://onlyfans.com/my/statements/earnings')
+driver.get('https://onlyfans.com')
 
 
 try:
-    username_input = WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.XPATH, "//input[@name='username']"))
+    email_input = WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="input-188"]'))
     )
     password_input = WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.XPATH, "//input[@name='password']"))  
+        EC.presence_of_element_located((By.XPATH, '//*[@id="input-191"]'))  
     )
     login_button = WebDriverWait(driver, 20).until(
-        EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div[1]/div[1]/div/div/div[2]/div/form/button[1]'))   
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div[1]/div[1]/div/div/div[2]/div/form/button[1]]'))   
     )
 
     username = os.getenv('lmontoyz23@gmail.com')  
@@ -28,11 +28,11 @@ try:
     if username is None or password is None:
         print("Error: Las variables de entorno para el nombre de usuario y la contraseña no están establecidas.")
     else:
-        username_input.send_keys(username)
+        email_input.send_keys(username)
         password_input.send_keys(password)
         login_button.click()
 
-        datos_ingresos_element = WebDriverWait(driver, 20).until(
+        datos_ingresos_element = WebDriverWait(driver, 120).until(
             EC.presence_of_element_located((By.XPATH,'//*[@id="content"]/div[1]/div[2]/div[2]/div[2]/div[1]/div[2]/div[3]/div[1]' ))
         )
         datos_ingresos = datos_ingresos_element.text
