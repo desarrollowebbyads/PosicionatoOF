@@ -1,26 +1,50 @@
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+import os
 
-service = Service(ChromeDriverManager().install())
+# Actualización en la inicialización del WebDriver de Chrome
+service = ChromeService(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service)
-driver.get("https://onlyfans.com")
-driver.implicitly_wait(10)
 
-username_input = WebDriverWait(driver, 20).until(
-    EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Correo']"))
-)
-username_input.send_keys("lmontoyz23@gmail.com")
+driver.get('https://onlyfans.com/my/statements/earnings')
 
-password_input = WebDriverWait(driver, 20).until(
-    EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Contraseña']"))
-)
-password_input.send_keys("REfgab5%432/D")
+try:
+    email_input = WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located((By.CLASS_NAME, '.v-input__slot'))
+    )
+    password_input = WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located((By.CLASS_NAME, '.v-input__slot'))
+    )
+    
+    login_button = WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable((By.CLASS_NAME, '.g-btn'))
+    )
 
-submit_button = WebDriverWait(driver, 20).until(
-    EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'INICIAR SESIÓN')]"))
-)
-submit_button.click()
+
+    username = os.getenv('USERNAME')  
+    password = os.getenv('PASSWORD')  
+
+    if username is None or password is None:
+        print("Error: Las variables de entorno para el nombre de usuario y la contraseña no están establecidas.")
+    else:
+        email_input.send_keys(username)
+        password_input.send_keys(password)
+        login_button.click()
+
+        datos_ingresos_element = WebDriverWait(driver, 120).until(
+            EC.presence_of_element_located((By.CLASS_NAME, ''))
+        )
+        datos_ingresos = datos_ingresos_element.text
+        print("Ingresos diarios:", datos_ingresos)
+
+except TimeoutException:
+    print("El elemento no se encontró en el tiempo esperado")
+finally:
+    driver.quit()
+
+    

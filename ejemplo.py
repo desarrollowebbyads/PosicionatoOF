@@ -4,26 +4,28 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from dotenv import load_dotenv
 import os
 
 driver = webdriver.Chrome ()
 
 driver.get('https://onlyfans.com')
 
+load_dotenv('C:\Users\hegrog\Desktop\WebScrappingOnly\.env')
 
 try:
     email_input = WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="input-188"]'))
+        EC.visibility_of_element_located((By.CLASS_NAME, 'v-input__slot'))
     )
     password_input = WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="input-191"]'))  
+        EC.visibility_of_element_located((By.CLASS_NAME, 'v-input__slot')) 
     )
     login_button = WebDriverWait(driver, 20).until(
-        EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div[1]/div[1]/div/div/div[2]/div/form/button[1]]'))   
+        EC.element_to_be_clickable((By.CLASS_NAME, 'g-btn'))   
     )
 
-    username = os.getenv('lmontoyz23@gmail.com')  
-    password = os.getenv('REfgab5%432/D')  
+    username = os.getenv('USERNAME')  
+    password = os.getenv('PASSWORD')  
 
     if username is None or password is None:
         print("Error: Las variables de entorno para el nombre de usuario y la contraseña no están establecidas.")
@@ -33,7 +35,7 @@ try:
         login_button.click()
 
         datos_ingresos_element = WebDriverWait(driver, 120).until(
-            EC.presence_of_element_located((By.XPATH,'//*[@id="content"]/div[1]/div[2]/div[2]/div[2]/div[1]/div[2]/div[3]/div[1]' ))
+            EC.presence_of_element_located((By.CLASS_NAME,'.b-stats-row__val' ))
         )
         datos_ingresos = datos_ingresos_element.text
         print("Ingresos diarios:", datos_ingresos)

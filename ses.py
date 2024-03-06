@@ -21,7 +21,7 @@ try:
     )
     password_input.send_keys("REfgab5%432/D")
 
-    submit_button = WebDriverWait(driver, 20).until(
+    submit_button = WebDriverWait(driver, 20).until( 
         EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))
     )
     submit_button.click()
